@@ -61,7 +61,7 @@ async function run() {
     const result = await classCollection.find().toArray();
     res.send(result) ;
    })
-   app.get('/class/:email', async(req,res) => {
+   app.get('/class/:email', verifyJWT, async(req,res) => {
     const email = req.params.email ;
     const query = {email : email} ;
     const result = await classCollection.find(query).toArray() ;
