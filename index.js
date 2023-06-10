@@ -61,7 +61,7 @@ async function run() {
     const result = await classCollection.find().toArray();
     res.send(result) ;
    })
-
+//  users APIS 
   app.post('/users', async(req, res) => {
     const user = req.body ;
     const query = {email: user.email}
@@ -166,7 +166,7 @@ async function run() {
 
 
 
-   
+
 
 
 
