@@ -56,7 +56,7 @@ async function run() {
     const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn : '1h'})
     res.send({token}) ;
    })
-
+// class APIs
    app.get('/class', async(req, res) => {
     const result = await classCollection.find().toArray();
     res.send(result) ;
