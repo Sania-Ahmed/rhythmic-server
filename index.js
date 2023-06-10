@@ -61,7 +61,7 @@ async function run() {
     const result = await classCollection.find().toArray();
     res.send(result) ;
    })
-   app.post('/addClass', async(req,res) => {
+   app.post('/class',verifyJWT, async(req,res) => {
     const newClass = req.body ;
     const result = await classCollection.insertOne(newClass)
     res.send(result) ;
