@@ -61,7 +61,7 @@ async function run() {
     const result = await classCollection.find().toArray();
     res.send(result) ;
    })
-   app.get('/class/:email', verifyJWT, async(req,res) => {
+   app.get('/class/:email' ,  async(req,res) => {
     const email = req.params.email ;
     const query = {email : email} ;
     const result = await classCollection.find(query).toArray() ;
@@ -72,8 +72,31 @@ async function run() {
     const result = await classCollection.insertOne(newClass)
     res.send(result) ;
    })
+   app.patch('/approvedClass/:id', async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const approved = {
+        $set: {
+          status: 'approved'
+        },
+      };
+      const result= await classCollection.updateOne(filter, approved);
 
+      res.send(result);
+   })
+   app.patch('/deniedClass/:id', async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const denied = {
+        $set: {
+          status: 'denied'
+        },
+      };
+      const result= await classCollection.updateOne(filter, denied);
 
+      res.send(result);
+   })
+  
 //  users APIS 
   app.post('/users', async(req, res) => {
     const user = req.body ;
