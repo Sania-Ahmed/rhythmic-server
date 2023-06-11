@@ -227,6 +227,7 @@ async function run() {
 
     app.post('/payments', async (req, res) => {
       const payment = req.body;
+      payment.createdAt = new Date();
       const insertResult = await paymentCollection.insertOne(payment);
 
       const query = { itemId: payment?.itemId };
@@ -248,7 +249,7 @@ async function run() {
     app.get('/payments/:email', async(req, res) => {
       const email = req.params.email;
       const query = { email: email };
-      const result = await paymentCollection.find(query).toArray() ;
+      const result = await paymentCollection.find(query).sort({ createdAt: -1 }).toArray() ;
 
       res.send(result) ;
       
