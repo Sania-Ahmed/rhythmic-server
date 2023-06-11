@@ -51,6 +51,8 @@ async function run() {
     const classCollection = database.collection("class");
     const listCollection = database.collection("list");
     const usersCollection = database.collection("users");
+    const paymentCollection = database.collection("payments");
+    
     
    app.post('/jwt', (req,res) => {
     const user = req.body ;
@@ -211,7 +213,22 @@ async function run() {
     res.send({clientSecret:  paymentIntent.client_secret})
   })
 
+  app.post('/payments', async(req, res) => {
+    const payment = req.body;
+    const insertResult = await paymentCollection.insertOne(payment);
+   
+    const query = { itemId:  payment?.itemId  };
+    const deleteResult = await listCollection.deleteOne(query);
+    const updateQuery = { _id: new ObjectId(payment.itemId) };
+    const updateOperation = 
+    { $set: { enrolled: true ,
+    students: payment?.students + 1 ,
+    available_seats: parseInt(payment?.seats) -1 
+   }};
+   const updateResult = await classCollection.updateOne(updateQuery, updateOperation);
 
+    res.send({ insertResult, updateResult , deleteResult});
+  })
 
 
 
