@@ -99,6 +99,18 @@ async function run() {
 
       res.send(result);
     })
+    app.patch( '/feedback/:id', async (req, res) => {
+      console.log(req.body.feedback) ;
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const sendFeedback = {
+        $set: {
+          feedback: req.body.feedback
+        },
+      };
+      const result = await classCollection.updateOne(filter, sendFeedback);
+      res.send(result);
+    })
 
     //  users APIS 
     app.post('/users', async (req, res) => {
@@ -112,7 +124,7 @@ async function run() {
       res.send(result);
     })
 
-    app.get('/users', verifyJWT, async (req, res) => {
+    app.get('/users', async (req, res) => {
       const result = await usersCollection.find().toArray();
       res.send(result);
     })
